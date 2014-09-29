@@ -6,6 +6,8 @@ rescue LoadError => e
   abort "You may be able to fix this problem by running 'bundle'."
 end
 
+mono = ENV['MONO']
+
 task :default => 'deps'
 
 necessary_programs = %w(VirtualBox vagrant)
@@ -160,6 +162,12 @@ task :deploy do
   puts "Using Puppetfile at #{puppetfile}"
   unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} /usr/bin/r10k puppetfile install")
     abort 'Failed to build out Puppet module directory. Exiting...'
+  end
+  if mono
+	puts "Moving modules out of monolithic dir #{moduledir}/puppet-modules to #{moduledir}"
+	unless system("mv #{moduledir}/puppet-modules/* #{moduledir}")
+		abort "Failed to move modules from monolithic repo to #{moduledir}"
+	end
   end
   puts "Bringing up vagrant machines"
   unless system("vagrant up master agent1") 
