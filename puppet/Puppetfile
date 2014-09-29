@@ -1,3 +1,1 @@
-mod 'stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'
-mod 'apache', :git => 'https://github.com/puppetlabs/puppetlabs-apache'
-mod 'mysql', :git => 'https://github.com/puppetlabs/puppetlabs-mysql'
+mod 'puppet-modules', :git => 'git@github.com:connectsolutions/puppet-modules' 
