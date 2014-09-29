@@ -1,0 +1,9 @@
+*.swp
+.vagrant
+.pe_build
+puppet/Puppetfile.lock
+puppet/.librarian
+puppet/modules
+puppet/.tmp
+Gemfile.lock
+puppet/puppet-*

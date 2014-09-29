@@ -1,0 +1,11 @@
+---
+:gitlab_url: https://10.10.100.111
+
+# Found in My Profile -> Account -> Private token
+# # :private_token: super_secret_key_from_gitlab
+# #
+# # # Whether or not to display potentially lengthy
+# # # results in the system pager (i.e. 'less').
+# # # Default: false (to maintain original behavior)
+# # # Recommended setting: true
+# # :display_results_in_pager: false
