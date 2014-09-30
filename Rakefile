@@ -11,7 +11,7 @@ mono = ENV['MONO']
 task :default => 'deps'
 
 necessary_programs = %w(VirtualBox vagrant)
-necessary_plugins = %w(vagrant-auto_network vagrant-pe_build vagrant-vmware-fusion)
+necessary_plugins = %w(vagrant-auto_network vagrant-pe_build)
 necessary_gems = %w(bundle r10k)
 dir_structure = %w(puppet puppet/modules puppet/manifests) 
 file_structure = %w(puppet/Puppetfile puppet/manifests/site.pp)
