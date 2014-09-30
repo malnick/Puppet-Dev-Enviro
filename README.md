@@ -21,19 +21,19 @@ WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do 
 * Symlinks modules in ```puppet/Puppetfile``` to the VM for easy testing.
 * You can live edit on your host machine with your local tools all test code.
 
-#### '''MONO=true rake deploy```
+#### ```MONO=true rake deploy```
 
 * Same as 'deploy' but works with a monolithic puppet repo.
 * When set, moves all modules out of cloned repo to ```puppet/modules```
 * Declare single monolithic repo in ```puppet/Pupeptfile``` as you would any other repo.
 * WARNING: Will break if you declare other modules that are not in a monolithic repo in the Puppetfile - currently this enviro only works for mono or non-mono at a time only, you can't do both at once.
 
-### ```rake create_structure```
+#### ```rake create_structure```
 
 * Ensures the correct directory structure for the environment
 * Creates stub Puppetfile
 
-### ```rake pull```
+#### ```rake pull```
 
 **WARNING:** This will blow away everything in ```puppet/modules```
 * Runs r10k on Puppetfile to pull down modules again, if needed.
