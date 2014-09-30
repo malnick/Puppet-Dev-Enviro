@@ -29,7 +29,7 @@ task :deps do
   necessary_programs.each do |prog| 
     printf "Checking for %s...", prog
     unless File.which(prog)
-      abort "\nSorry but I didn't find require program \'#{prog}\' in your PATH.\n"
+      abort "\nSorry but I didn't find required program \'#{prog}\' in your PATH.\n"
     end
     puts "OK"
   end
@@ -37,8 +37,8 @@ task :deps do
   necessary_plugins.each do |plugin|
     printf "Checking for vagrant plugin %s...", plugin
     unless %x{vagrant plugin list}.include? plugin
-      puts "\nSorry, I wasn't able to find the Vagrant plugin \'#{plugin}\' on your system."
-      abort "You may be able to fix this by running 'rake setup\'.\n"
+      puts "\nSorry, I wasn't able to find the Vagrant plugin \'#{plugin}\' on your system, running 'rake setup'."
+      Rake::Task['setup'].execute
     end
     puts "OK"
   end
@@ -47,7 +47,8 @@ task :deps do
     printf "Checking for Ruby gem %s...", gem
     unless system("gem list --local -q --no-versions --no-details #{gem} | egrep '^#{gem}$' > /dev/null 2>&1")
       puts "\nSorry, I wasn't able to find the \'#{gem}\' gem on your system."
-      abort "You may be able to fix this by running \'gem install #{gem}\'.\n"
+      puts "\nRunning 'rake setup'\n"
+      Rake::Task['setup'].execute
     end
     puts "OK"
   end

@@ -2,22 +2,48 @@ puppet-dev-environment
 ======================
 
 A development environment for testing puppet modue(s) via rake tasks &amp; vagrant. 
+
 ## Deployment
-I wanted to create a way to easily write modules using my local editor and dotfiles (tmux etc) but have them available on the VM for testing purposes.  
+WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do not leave sensitive modules in there before running deploy.
 
-To do this I wrote a Rakefile that pulls down modules via r10k (if needed) and adds them to puppet/modules, then deploys the three VM's I use most often in class.
+#### ```rake```
 
-1. Master
+* Environment setup:
+	* Checks for neccessary programs
+	* Checks for neccessary gems
+	* Checks for neccessary vagrant plugins
+	* Runs ```rake setup``` if any are not found. 
 
-	A standard master VM 
+#### ```rake deploy```
 
-2. Agent
+* Deploys a master VM with Puppet Enterprise 3.2.3 (configurable in the Vagrantfile).
+* Pulls down modules declared in ```puppet/Puppetfile```.
+* Symlinks modules in ```puppet/Puppetfile``` to the VM for easy testing.
+* You can live edit on your host machine with your local tools all test code.
 
-	A standard agent for testing code on / demonstration
+#### '''MONO=true rake deploy```
 
-3. Standalone
+* Same as 'deploy' but works with a monolithic puppet repo.
+* When set, moves all modules out of cloned repo to ```puppet/modules```
+* Declare single monolithic repo in ```puppet/Pupeptfile``` as you would any other repo.
+* WARNING: Will break if you declare other modules that are not in a monolithic repo in the Puppetfile - currently this enviro only works for mono or non-mono at a time only, you can't do both at once.
 
-	A standalone VM for testing with ```puppet apply```
+### ```rake create_structure```
+
+* Ensures the correct directory structure for the environment
+* Creates stub Puppetfile
+
+### ```rake pull```
+
+**WARNING:** This will blow away everything in ```puppet/modules```
+* Runs r10k on Puppetfile to pull down modules again, if needed.
+
+#### ```rake test```
+
+**WARNING:** Currently in development. 
+* *SHOULD* Add stuff to git and push to repo for given module, i.e., automate the git add/commit/push process.
+
+
 
 ## Pipeline
 
