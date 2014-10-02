@@ -45,7 +45,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	pe.role		= :agent
 	pe.master	= 'master.dev'
     end
-    frontend.vm.provision "shell", inline: "puppet agent -t"
   end
 
   config.vm.define "csx_frontend" do |frontend|
@@ -57,7 +56,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	pe.role		= :agent
 	pe.master	= 'master.dev'
     end
-    frontend.vm.provision "shell", inline: "puppet agent -t"
   end
 
   # start csx_backend, it is a dependency
@@ -69,7 +67,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	pe.role		= :agent
 	pe.master	= 'master.dev'
     end
-    backend.vm.provision "shell", inline: "puppet agent -t"
   end
 
   # this uses the host vpn for accessing eng.wopr resources
