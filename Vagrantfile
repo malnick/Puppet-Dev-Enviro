@@ -25,15 +25,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
 ## dev machine - ssh in and puppet apply or a "whatever" box 
-  config.vm.define :dev1 do |dev|
-    dev.vm.network :private_network, ip: "10.28.126.140"
-    dev.vm.hostname = 'dev1.puppetlabs.vm'
-    dev.vm.provision :hosts
-    dev.vm.provision :pe_bootstrap do |pe|
-      pe.role   =  :agent
-      pe.master = 'master.dev'
-    end
-  end
+  #config.vm.define :dev1 do |dev|
+  #  dev.vm.network :private_network, ip: "10.28.126.140"
+  #  dev.vm.hostname = 'dev1.puppetlabs.vm'
+  #  dev.vm.provision :hosts
+  #  dev.vm.provision :pe_bootstrap do |pe|
+  #    pe.role   =  :agent
+  #    pe.master = 'master.dev'
+  #  end
+  #end
 
 # CSX machines 
   # start csx_mysql first, csx_frontend depends on it
@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	pe.role		= :agent
 	pe.master	= 'master.dev'
     end
-    frontend.vm.provision "shell", path: "puppet agent -t"
+    frontend.vm.provision "shell", inline: "puppet agent -t"
   end
 
   config.vm.define "csx_frontend" do |frontend|
@@ -57,7 +57,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	pe.role		= :agent
 	pe.master	= 'master.dev'
     end
-    frontend.vm.provision "shell", path: "puppet agent -t"
+    frontend.vm.provision "shell", inline: "puppet agent -t"
   end
 
   # start csx_backend, it is a dependency
@@ -69,7 +69,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	pe.role		= :agent
 	pe.master	= 'master.dev'
     end
-    backend.vm.provision "shell", path: "puppet agent -t"
+    backend.vm.provision "shell", inline: "puppet agent -t"
   end
 
   # this uses the host vpn for accessing eng.wopr resources
