@@ -171,7 +171,7 @@ task :deploy do
 	end
   end
   puts "Bringing up vagrant machines"
-  unless system("vagrant up master agent1") 
+  unless system("vagrant up") 
 	  abort 'Vagrant up failed. Exiting...'
   end
   puts "Vagrant Machines Up Successfully\n"
@@ -187,14 +187,26 @@ end
 
 desc 'Pull down modules in Puppetfile'
 task :pull do
-	confdir = Dir.pwd
-	moduledir = "#{confdir}/puppet/modules"
-	puppetfile = "#{confdir}/puppet/Puppetfile"
-	puts "Pulling down new modules in #{puppetfile} to #{moduledir}"
-	unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} /usr/bin/r10k puppetfile install")
-		abort 'Failed to build out Puppet module directory. Exiting...'
+	puts "This will blow away everything in puppet/modules. Are you sure you want to continue? [y/n]"
+	ans = STDIN.gets
+	if ans =~ /^y/
+		confdir = Dir.pwd
+		moduledir = "#{confdir}/puppet/modules"
+		puppetfile = "#{confdir}/puppet/Puppetfile"
+		puts "Pulling down new modules in #{puppetfile} to #{moduledir}"
+		unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} /usr/bin/r10k puppetfile install")
+			abort 'Failed to build out Puppet module directory. Exiting...'
+		end
+		puts "New modules successfully pulled down" 
+		if mono
+			puts "Moving modules out of monolithic dir #{moduledir}/puppet-modules to #{moduledir}"
+			unless system("mv #{moduledir}/puppet-modules/* #{moduledir}")
+				abort "Failed to move modules from monolithic repo to #{moduledir}"
+			end
+		end
+	else puts "Exiting..."
+		exit
 	end
-	puts "New modules successfully pulled down" 
 end
 desc 'Destroy Vagrant Machines'
 task :destroy do
