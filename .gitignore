@@ -7,3 +7,4 @@ puppet/modules
 puppet/.tmp
 Gemfile.lock
 puppet/puppet-*
+puppet/data
