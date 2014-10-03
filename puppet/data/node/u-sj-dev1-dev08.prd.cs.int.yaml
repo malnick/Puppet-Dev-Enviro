@@ -1,8 +1,0 @@
----
-classes:
- - cs_adobe_connect::share
- - cs_connect_agent
-cs_adobe_connect::filepaths::deploy_drive: "E:"
-cs_adobe_connect::filepaths::connect_version: "9.2.1"
-cs_adobe_connect::user::connect_user: "connectUser"
-cs_adobe_connect::user::connect_pass: "bbC0nnect!"

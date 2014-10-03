@@ -1,4 +1,0 @@
-profiles::apt_client_config::apt_url: http://jenkins.prd.cs.int/repo
-profiles::apt_client_config::apt_distro: precise
-profiles::apt_client_config::key_url: http://jenkins.prd.cs.int/engineering@connectsolutions.com.gpg.key
-profiles::apt_client_config::key: B3A85CE8

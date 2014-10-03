@@ -1,6 +1,0 @@
----
-cs_connect_agent::deploy_drive: "D:"
-cs_adobe_connect::filepaths::deploy_drive: "D:"
-cs_adobe_connect::filepaths::connect_version: "9.1.2"
-cs_adobe_connect::user::connect_user: "connectUser"
-cs_adobe_connect::user::connect_pass: "bbC0nnect!"
