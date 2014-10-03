@@ -40,19 +40,44 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       pe.role   =  :agent
       pe.master = 'master.dev'
     end
+    dev.vm.provision "shell", inline: "echo 'Don't forget to update site.pp on the master with my creds and what you want to dev' > /etc/motd"
   end
 
-config.vm.define :mtlb do |dev|
-    dev.vm.network :private_network, ip: "10.28.126.150"
-    dev.vm.hostname = 'mtlb.dev'
-    dev.vm.provision :hosts
-    dev.vm.provision :pe_bootstrap do |pe|
-      pe.role   =  :agent
-      pe.master = 'master.dev'
+# CSX machines 
+  # start csx_mysql first, csx_frontend depends on it
+  config.vm.define "csx_mysql" do |frontend|
+    frontend.vm.network "private_network", ip: "10.28.126.142"
+    frontend.vm.hostname = "u-du-csxstgsql.fed.cs.int"
+    frontend.vm.provision :hosts
+    frontend.vm.provision :pe_bootstrap do |pe|
+    	pe.role		= :agent
+	pe.master	= 'master.dev'
     end
   end
 
-# this uses the host vpn for accessing eng.wopr resources
+  config.vm.define "csx_frontend" do |frontend|
+    frontend.vm.network   "private_network", ip: "10.28.126.144"
+    frontend.vm.network   "private_network", ip: "173.46.143.13"
+    frontend.vm.hostname = "u-du-csxstgnode.fed.cs.int"
+    frontend.vm.provision :hosts
+    frontend.vm.provision :pe_bootstrap do |pe|
+    	pe.role		= :agent
+	pe.master	= 'master.dev'
+    end
+  end
+
+  # start csx_backend, it is a dependency
+  config.vm.define "csx_backend" do |backend|
+    backend.vm.network   "private_network", ip: "10.28.126.143"
+    backend.vm.hostname = "u-du-csxstgnode.fed.cs.int"
+    backend.vm.provision :hosts
+    backend.vm.provision :pe_bootstrap do |pe|
+    	pe.role		= :agent
+	pe.master	= 'master.dev'
+    end
+  end
+
+  # this uses the host vpn for accessing eng.wopr resources
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
