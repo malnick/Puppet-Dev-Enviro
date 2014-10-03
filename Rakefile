@@ -209,6 +209,11 @@ task :pull do
 				abort "Failed to move modules from monolithic repo to #{moduledir}"
 			end
 		end
+		if Dir.exists?("#{moduledir}/puppet-configuration/")
+  			unless system("cp -Rv #{moduledir}/puppet-configuration/* #{confdir}/puppet/data/")
+				abort "Failed to move puppet-configuration"
+			end
+  		end
 	else puts "Exiting..."
 		exit
 	end
