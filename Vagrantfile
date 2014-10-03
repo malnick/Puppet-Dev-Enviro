@@ -11,6 +11,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 ## Master
   config.vm.define :master do |master|
+    master.vm.provider :virtualbox do |v|
+    	v.memory = 2048
+	v.cpus = 1
+    end
     master.vm.network :private_network, ip: "10.28.126.141"
     master.vm.hostname = 'master.dev'
     master.vm.provision :hosts
@@ -19,9 +23,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     master.vm.synced_folder "puppet/modules", "/tmp/modules"
     master.vm.synced_folder "puppet/manifests", "/tmp/manifests"
-    #master.vm.provision "shell", inline: "service iptables stop"
+    master.vm.synced_folder "puppet/data", "/tmp/data"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -s /tmp/modules/ /etc/puppetlabs/puppet/"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -s /tmp/manifests/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -s /tmp/data /etc/puppetlabs/puppet/"
   end
 
 ## dev machine - ssh in and puppet apply or a "whatever" box 
