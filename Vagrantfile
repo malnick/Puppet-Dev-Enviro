@@ -27,20 +27,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master.vm.synced_folder "puppet/", "/tmp/puppet"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -s /tmp/modules/ /etc/puppetlabs/puppet/"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -s /tmp/manifests/ /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -s /tmp/data /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm /etc/puppetlabs/puppet/hiera.yaml && ln -s /tmp/puppet/hiera.yaml /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -s /tmp/data/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm /etc/puppetlabs/puppet/hiera.yaml && ln -s /tmp/puppet/hiera.yaml /etc/puppetlabs/puppet/hiera.yaml"
   end
 
 ## dev machine - ssh in and puppet apply or a "whatever" box 
-  #config.vm.define :dev1 do |dev|
-  #  dev.vm.network :private_network, ip: "10.28.126.140"
-  #  dev.vm.hostname = 'dev1.puppetlabs.vm'
-  #  dev.vm.provision :hosts
-  #  dev.vm.provision :pe_bootstrap do |pe|
-  #    pe.role   =  :agent
-  #    pe.master = 'master.dev'
-  #  end
-  #end
+  config.vm.define :dev1 do |dev|
+    dev.vm.network :private_network, ip: "10.28.126.140"
+    dev.vm.hostname = 'do.dev.here'
+    dev.vm.provision :hosts
+    dev.vm.provision :pe_bootstrap do |pe|
+      pe.role   =  :agent
+      pe.master = 'master.dev'
+    end
+    dev.vm.provision "shell", inline: "echo 'Don't forget to update site.pp on the master with my creds and what you want to dev' > /etc/motd"
+  end
 
 # CSX machines 
   # start csx_mysql first, csx_frontend depends on it
