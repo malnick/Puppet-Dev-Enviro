@@ -14,6 +14,3 @@ node 'u-du-csxstgsql.fed.cs.int' {
 }
 
 # Backend Server
-node "u-du-csxstgnode.fed.cs.int" {
-  include ::role::csx_backend
-}

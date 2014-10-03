@@ -1,0 +1,33 @@
+---
+classes:
+- cs_sso
+- cs_sumologic
+cs_sso::customer_abbrv: 'citi-stage'
+cs_sso::connect_version: '9.1.2'
+cs_sso::datacenter_region: 'bel'
+cs_sso::vip_addr: '64.106.167.216'
+cs_sso::vip_gateway: '64.106.167.129'
+cs_sso::vrrp_router_id: '75'
+cs_sso::vrrp_state: 'MASTER'
+cs_sso::vrrp_priority: '150'
+cs_sso::vrrp_pass: 'uxy23RRvf'
+cs_sso::ip_address_master: '10.7.0.73'
+cs_sso::ip_address_backup: '10.7.0.95'
+cs_sso::ip_private_gateway: '10.7.0.70'
+cs_sso::sso_url: 'citi-sp-uat.connectsolutions.com'
+cs_sso::x509_cert: 'star.connectsolutions.com.crt'
+cs_sso::x509_key: 'star.connectsolutions.com.key'
+cs_sso::keepalived::package_version: 'absent'
+cs_sumologic::collector_access_id: 'suQawNiCnqW241'
+cs_sumologic::collector_access_key: 'oYjzWcqM159xbMAjAKfjg2UVI7CTXWIZ46rrRT6JQqrqd77wbG8LbKf4NozHwqOC'
+cs_sumologic::server_role: 'sso'
+cs_sumologic::package_version: '19.83-8'
+cs_sumologic::sources:
+ -
+  pathExpression: '/var/log/tomcat7/catalina.out'
+  name: 'tomcat logs'
+  sourceType: 'LocalFile'
+ -
+  pathExpression: '/var/log/syslog'
+  name: 'syslog'
+  sourceType: 'LocalFile'

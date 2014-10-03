@@ -2,7 +2,7 @@
 :backends:
   - yaml
 :yaml:
-  :datadir: /etc/puppet/data
+  :datadir: /etc/puppetlabs/puppet/data
 :hierarchy:
   - "%{::clientcert}"
   - "%{::custom_location}"

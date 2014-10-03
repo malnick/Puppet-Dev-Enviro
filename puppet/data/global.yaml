@@ -1,0 +1,9 @@
+---
+profiles::apt_client_config::ppa_sources:
+  localpkgs:
+    apt_url: http://jenkins.prd.cs.int/repo
+    apt_distro: precise
+    key: B3A85CE8
+    key_url: http://jenkins.prd.cs.int/engineering@connectsolutions.com.gpg.key
+    arch: amd64
+    repos: 'main'

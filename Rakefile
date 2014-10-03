@@ -164,6 +164,11 @@ task :deploy do
   unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} /usr/bin/r10k puppetfile install")
     abort 'Failed to build out Puppet module directory. Exiting...'
   end
+  if Dir.exists?("#{moduledir}/puppet-configuration/")
+  	unless system("cp -Rv #{moduledir}/puppet-configuration/* #{confdir}/puppet/data/")
+		abort "Failed to move puppet-configuration"
+	end
+  end
   if mono
 	puts "Moving modules out of monolithic dir #{moduledir}/puppet-modules to #{moduledir}"
 	unless system("mv #{moduledir}/puppet-modules/* #{moduledir}")

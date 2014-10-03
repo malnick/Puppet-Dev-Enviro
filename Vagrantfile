@@ -24,9 +24,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master.vm.synced_folder "puppet/modules", "/tmp/modules"
     master.vm.synced_folder "puppet/manifests", "/tmp/manifests"
     master.vm.synced_folder "puppet/data", "/tmp/data"
+    master.vm.synced_folder "puppet/", "/tmp/puppet"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -s /tmp/modules/ /etc/puppetlabs/puppet/"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -s /tmp/manifests/ /etc/puppetlabs/puppet/"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -s /tmp/data /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm /etc/puppetlabs/puppet/hiera.yaml && ln -s /tmp/puppet/hiera.yaml /etc/puppetlabs/puppet/"
   end
 
 ## dev machine - ssh in and puppet apply or a "whatever" box 

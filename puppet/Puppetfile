@@ -1,3 +1,4 @@
 mod 'puppet-modules', :git => 'git@github.com:connectsolutions/puppet-modules', :ref => 'nginx' 
+mod 'puppet-configuration', :git => 'git@github.com:connectsolutions/puppet-configuration'
 mod 'nginx', :git => 'https://github.com/jfryman/puppet-nginx'
 mod 'apt', :git => 'https://github.com/puppetlabs/puppetlabs-apt'

@@ -1,0 +1,28 @@
+---
+cs_adobe_connect::filepaths::deploy_drive: "E:"
+cs_adobe_connect::filepaths::connect_root: "Connect"
+cs_adobe_connect::filepaths::cs_root: "connectSolutions"
+cs_adobe_connect::filepaths::connect_version: "9.2.1"
+cs_adobe_connect::install::service_install_enable: true
+cs_adobe_connect::config::account_name: "Building Blocks Alpha"
+cs_adobe_connect::config::account_name_abbrev: "bbconnect"
+cs_adobe_connect::config::serial_key: "AX56T-FFJCD-PNPQE-LAA31"
+cs_adobe_connect::config::primary_db: "10.7.1.101"
+cs_adobe_connect::config::mirror_db: "10.7.1.101"
+cs_adobe_connect::config::db_name: "bbconnect11"
+cs_adobe_connect::config::connect_db_user: "U4HT9N2459989"
+cs_adobe_connect::config::connect_db_password: "9XKBLMje3euZzZfd"
+cs_adobe_connect::config::db_user_read_only: "ccrouser"
+cs_adobe_connect::config::db_password_read_only: "Gg27p70AAWWJS8L!"
+cs_adobe_connect::config::config_admin_host: "bb-connect.connectsolutions.com"
+cs_adobe_connect::config::config_system_email: "jacob@connectsolutions.com"
+cs_adobe_connect::config::config_support_email: "jacob@connectsolutions.com"
+cs_adobe_connect::config::config_shared_storage: "\\\\10.6.3.164\\connectShare"
+cs_adobe_connect::config::config_cache_content: "29"
+cs_adobe_connect::config::host_mapping: "u-sj-dev1-dev06=bb-connect-fms1.connectsolutions.com,u-sj-dev1-dev07=bb-connect-fms2.connectsolutions.com"
+cs_adobe_connect::agentdeps::breeze_root: "breeze"
+cs_adobe_connect::user::connect_user: "connectUser"
+cs_adobe_connect::user::connect_pass: "bbC0nnect!"
+cs_adobe_connect::appserv::webapp_ssl_option : true
+cs_adobe_connect::comserv::use_stunnel_for_fms : true
+cs_adobe_connect::comserv::fms_ssl_option : "1"

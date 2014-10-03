@@ -1,0 +1,6 @@
+---
+classes:
+  - cs_adobe_connect
+  - cs_connect_agent
+  - cs_stunnel
+  - cs_java
