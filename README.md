@@ -1,7 +1,9 @@
-puppet-dev-environment
+MASTER BRANCH: puppet-dev-environment
 ======================
 
 A development environment for testing puppet modue(s) via rake tasks &amp; vagrant. 
+
+See other available branches for deploying specific enviros such as MTLB, CSX, etc.
 
 ## Deployment
 WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do not leave sensitive modules in there before running deploy.
