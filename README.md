@@ -6,6 +6,20 @@ MASTER BRANCH: puppet-dev-environment
 See the section on "Code Change Pipeline" for workflow.
 
 ## Overview
+Currently this dev environment is setup with git branches. Each dev enviro gets a copy of the Rakefile and a custom Vagrantfile that is specific to the environment under test.
+
+To list available environments:
+
+```git branch -v```
+
+To run an available environment:
+
+```git checkout $enviro_name```
+
+...and run through the *Pipeline* section outlined below, under the *Deployment* section. 
+
+If this is your first time ensure the run through instructions in the code changes section, which is the last section in this document.
+
 #### Metadata
 Enviro: MTLB Development
 
