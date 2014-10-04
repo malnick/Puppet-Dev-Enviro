@@ -23,10 +23,10 @@ To run an available environment:
 If this is your first time ensure the run through instructions in the code changes section, which is the last section in this document.
 
 ### If you want to create your own environment:
-1. git checkout -b $my_awesome_enviro
-1. vi Vagrantfile
+1. ```git checkout -b $my_awesome_enviro```
+1. ```vi Vagrantfile```
 	1. edit your Vagrant machines
-1. vi README.md
+1. ```vi README.md```
 	1. Be verbose. 
 1. Deploy it with the neccessary rake commands. 
 
