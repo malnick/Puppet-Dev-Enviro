@@ -64,50 +64,61 @@ WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do 
 
 Example: 
 
-	# Puppet Modules
-	mod 'puppet-modules', :git => 'git@github.com:connectsolutions/puppet-modules', :ref => ${some_branch}
+```ruby
+# Puppet Modules
+mod 'puppet-modules', :git => 'git@github.com:connectsolutions/puppet-modules', :ref => ${some_branch}
 
-	# Puppet Data
-	mod 'puppet-configuration', :git => 'git@github.com:connectsolutions/puppet-configuration'
+# Puppet Data
+mod 'puppet-configuration', :git => 'git@github.com:connectsolutions/puppet-configuration'
 
-	# Aux Modules
-	mod 'nginx', :git => 'https://github.com/jfryman/puppet-nginx'
-	mod 'apt', :git => 'https://github.com/puppetlabs/puppetlabs-apt'
+# Aux Modules
+mod 'nginx', :git => 'https://github.com/jfryman/puppet-nginx'
+mod 'apt', :git => 'https://github.com/puppetlabs/puppetlabs-apt'
+```
 
 1. Add hieradata repo to ```puppet/puppetfile```
 
-	vi puppet/Puppetfile
-	# Add the :git repo for your puppet-configuration
+```bash
+vi puppet/Puppetfile
+# Add the :git repo for your puppet-configuration
+```
 
 1. Configure hieradata
 
-	vi puppet/hiera.yaml
-	# Make neccessary edits
+```bash
+vi puppet/hiera.yaml
+# Make neccessary edits
+```
 
 1. Configure site.pp
 
-	vi puppet/manifests/site.pp
-	# Add or edit node definitions
-	node 'my.node.dev' {
-		include my::test::code
-	}
+```bash
+vi puppet/manifests/site.pp
+# Add or edit node definitions
+node 'my.node.dev' {
+	include my::test::code
+}
+```
 
 1. Deploy the environment:
-	
-	# Deploy with MONO=true b/c our puppet-modules repo is monolithic
-	MONO=true rake deploy
+
+```
+# Deploy with MONO=true b/c our puppet-modules repo is monolithic
+MONO=true rake deploy
+```
 
 1. Test the code
 
-	vagrant ssh ${vagrant_machine_name}
-	sudo su root
-	puppet agent -t
+```
+vagrant ssh ${vagrant_machine_name}
+sudo su root
+puppet agent -t
+```
 
 # Code Change Pipeline
 READ THIS IT'S IMPORTANT!!!!
 ***ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY***
 
-## Monolithic puppet module repo
 1. If you haven't already, git clone the puppet-modules repo (git@github.com:connectsolutions/puppet-modules)
 1. In one terminal, have an open ssh session going with your dev node in puppet-dev-enviro
 1. In another terminal have an editor open to the module code for $your_dev_class which is directly editing code from puppet-modules/$my_dev_modules
