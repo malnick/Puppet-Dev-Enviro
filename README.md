@@ -53,7 +53,6 @@ WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do 
 * Same as 'deploy' but works with a monolithic puppet repo.
 * When set, moves all modules out of cloned repo to ```puppet/modules```
 * Declare single monolithic repo in ```puppet/Pupeptfile``` as you would any other repo.
-* WARNING: Will break if you declare other modules that are not in a monolithic repo in the Puppetfile - currently this enviro only works for mono or non-mono at a time only, you can't do both at once.
 
 #### ```rake create_structure```
 
