@@ -1,12 +1,11 @@
 MTLB BRANCH: puppet-dev-environment
 ======================
 ## Code changse READ THIS IT'S IMPORTANT!!!!
-***ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY***
+**ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY**
 
 See the section on "Code Change Pipeline" for workflow.
 
 ## Overview
-#### Metadata
 Enviro: MTLB Development
 
 Machines:
