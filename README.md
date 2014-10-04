@@ -1,7 +1,9 @@
 MASTER BRANCH: puppet-dev-environment
 ======================
+POC: jeff.malnick@connectsolutions.com
+
 ## Code changse READ THIS IT'S IMPORTANT!!!!
-***ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY***
+**ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY**
 
 See the section on "Code Change Pipeline" for workflow.
 
@@ -20,17 +22,6 @@ To run an available environment:
 
 If this is your first time ensure the run through instructions in the code changes section, which is the last section in this document.
 
-#### Metadata
-Enviro: MTLB Development
-
-Machines:
-
-* 1 Puppet Master
-* 1 MTLB Node
-
-Notes: MTLB rapid development 
-
-POC: jeff.malnick@connectsolutions.com
 
 ## Deployment
 WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do not leave sensitive modules in there before running deploy.
@@ -131,7 +122,7 @@ puppet agent -t
 
 # Code Change Pipeline
 READ THIS IT'S IMPORTANT!!!!
-***ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY***
+**ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY**
 
 1. If you haven't already, git clone the puppet-modules repo (git@github.com:connectsolutions/puppet-modules)
 1. In one terminal, have an open ssh session going with your dev node in puppet-dev-enviro
