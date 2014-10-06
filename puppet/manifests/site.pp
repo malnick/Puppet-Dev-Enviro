@@ -1,6 +1,7 @@
 # MTLB Node
 node 'mtlb.dev' {
-  include profiles::mtlb
+  include role::mtlb
+
 }
 
 # Trash-it Server
