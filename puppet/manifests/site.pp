@@ -1,6 +1,6 @@
-# Frontend Server
-node "u-du-csxstgnode.fed.cs.int" {
-  include ::role::csx_frontend
+# MTLB Node
+node 'mtlb.dev' {
+  include profiles::mtlb
 }
 
 # Trash-it Server
@@ -8,9 +8,8 @@ node 'dev1.dev' {
   notice("Hello world")
 }
 
-# MySQL Server
-node 'u-du-csxstgsql.fed.cs.int' {
-  include ::role::csx_mysql
-}
 
-# Backend Server
+
+
+
+
