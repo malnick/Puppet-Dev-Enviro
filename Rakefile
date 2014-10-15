@@ -11,9 +11,9 @@ mono = ENV['MONO']
 task :default => 'deps'
 
 necessary_programs = %w(VirtualBox vagrant)
-necessary_plugins = %w(vagrant-auto_network vagrant-pe_build)
+necessary_plugins = %w(vagrant-hosts vagrant-auto_network vagrant-pe_build)
 necessary_gems = %w(bundle r10k)
-dir_structure = %w(puppet puppet/modules puppet/manifests) 
+dir_structure = %w(puppet puppet/modules puppet/manifests)
 file_structure = %w(puppet/Puppetfile puppet/manifests/site.pp)
 
 desc 'Check for the environment dependencies'
@@ -25,8 +25,8 @@ task :deps do
     abort 'Sorry, you need to be running Linux or OSX to use this Vagrant environment!'
   end
   puts "OK"
- 
-  necessary_programs.each do |prog| 
+
+  necessary_programs.each do |prog|
     printf "Checking for %s...", prog
     unless File.which(prog)
       abort "\nSorry but I didn't find required program \'#{prog}\' in your PATH.\n"
@@ -59,7 +59,7 @@ task :deps do
   end
   puts "OK"
 
-  puts "\n" 
+  puts "\n"
   puts '*' * 80
   puts "Congratulations! Everything looks a-ok."
   puts '*' * 80
@@ -80,7 +80,7 @@ task :setup do
     end
   end
 
-  unless %x{bundle check} 
+  unless %x{bundle check}
     system('bundle install')
   end
 end
@@ -88,14 +88,14 @@ end
 desc "Push new modules to git, add none existing ones to Pfile and pull them down"
 task :test do
 	cwd = File.dirname(__FILE__)
-	modules = [] 
+	modules = []
 	Dir.foreach("#{cwd}/puppet") do |m|
-		if m =~ /^puppet/ 
+		if m =~ /^puppet/
 			puts m
-			modules.push(m)	
+			modules.push(m)
 			new_modules = []
-			puppetfile = File.open("#{cwd}/puppet/Puppetfile").read 
-			puppetfile.each_line do |line| 
+			puppetfile = File.open("#{cwd}/puppet/Puppetfile").read
+			puppetfile.each_line do |line|
 				puts "in open"
 				if line =~ /#{m}/
 					puts "#{m} is already in puppet/Puppetfile, not adding."
@@ -111,9 +111,9 @@ task :test do
 				end
 			end
 		end
-		
+
 	end
-	modules.each do |repo| 
+	modules.each do |repo|
 		puts "Pushing new code from #{repo} to git..."
 		if system("ls #{cwd}/puppet/#{repo}/.git")
 			unless system("cd #{cwd}/puppet/#{repo} && git add . && git commit -m 'automated push via rake' && git push")
@@ -127,7 +127,7 @@ task :test do
 end
 
 desc "Create dir structure"
-task :create_structure do 
+task :create_structure do
 puts "Checking CWD for directory structure..."
   dir_structure.each do |d|
 	cwd = Dir.getwd
@@ -143,7 +143,7 @@ puts "Checking CWD for directory structure..."
 	fqp = "#{Dir.getwd}/#{f}"
 	if File.exists?(fqp)
 		puts "#{fqp} exists, moving on."
-	elsif f == "puppet/Puppetfile" 
+	elsif f == "puppet/Puppetfile"
 		puts "Writing a base Puppetfile with 'stdlib'"
 		File.open(fqp, 'w') {|file| file.write("mod 'stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'")}
 	else
@@ -153,18 +153,31 @@ puts "Checking CWD for directory structure..."
   end
 end
 
-desc 'Deploying modules form Puppetfile and booting master and agent VMs' 
+desc 'Deploying modules form Puppetfile and booting master and agent VMs'
 task :deploy do
   puts "Building out Puppet module directory..."
   confdir = Dir.pwd
+  # Check directory structure:
+  puts "Checking for puppet/modules..."
+  unless Dir.exists?("#{confdir}/puppet/modules")
+	  puts "puppet/modules not found, creating." 
+	  Dir.mkdir("#{confdir}/puppet/modules")
+  end
+  puts "Checking for puppet/data..."
+  unless Dir.exists?("#{confdir}/puppet/data")
+	  puts "puppet/data not found, creating."
+	  Dir.mkdir("#{confdir}/puppet/data")
+  end
+  
   moduledir = "#{confdir}/puppet/modules"
   puppetfile = "#{confdir}/puppet/Puppetfile"
   puts "Placing modules in #{moduledir}"
   puts "Using Puppetfile at #{puppetfile}"
-  unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} /usr/bin/r10k puppetfile install")
-    abort 'Failed to build out Puppet module directory. Exiting...'
+  unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} r10k puppetfile install")
+	  abort 'Failed to build out Puppet module directory. Exiting...'
   end
   if Dir.exists?("#{moduledir}/puppet-configuration/")
+	puts "Detected puppet data repo, copying contents to #{confdir}/puppet/data"
   	unless system("cp -Rv #{moduledir}/puppet-configuration/* #{confdir}/puppet/data/")
 		abort "Failed to move puppet-configuration"
 	end
@@ -176,18 +189,10 @@ task :deploy do
 	end
   end
   puts "Bringing up vagrant machines"
-  unless system("vagrant up") 
+  unless system("vagrant up --provider virtualbox") 
 	  abort 'Vagrant up failed. Exiting...'
   end
   puts "Vagrant Machines Up Successfully\n"
-  puts "Access master at 'vagrant ssh master' or 'ssh vagrant@10.10.100.100'\n"
-  puts "Password = vagrant"
-  puts "-----"
-  puts "Puppet modules brought in via puppet/Puppetfile are available on the Vagrant master VM at /etc/puppetlabs/puppet/modules"
-  puts "-----"
-  puts "Contact git owner for PR's & bug fixes"
-  puts "-----"
-  puts "Done."
 end
 
 desc 'Pull down modules in Puppetfile'
@@ -199,10 +204,10 @@ task :pull do
 		moduledir = "#{confdir}/puppet/modules"
 		puppetfile = "#{confdir}/puppet/Puppetfile"
 		puts "Pulling down new modules in #{puppetfile} to #{moduledir}"
-		unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} /usr/bin/r10k puppetfile install")
+		unless system("PUPPETFILE=#{puppetfile} PUPPETFILE_DIR=#{moduledir} r10k puppetfile install")
 			abort 'Failed to build out Puppet module directory. Exiting...'
 		end
-		puts "New modules successfully pulled down" 
+		puts "New modules successfully pulled down"
 		if mono
 			puts "Moving modules out of monolithic dir #{moduledir}/puppet-modules to #{moduledir}"
 			unless system("mv #{moduledir}/puppet-modules/* #{moduledir}")
@@ -227,6 +232,6 @@ task :destroy do
 		system("vagrant destroy -f")
 	else
 		abort 'Aborting vagrant destroy, exiting...'
-	end		
+	end
 end
 
