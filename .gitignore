@@ -8,3 +8,4 @@ puppet/.tmp
 Gemfile.lock
 puppet/puppet-*
 puppet/data/*
+puppet/filestore/*
