@@ -4,6 +4,6 @@
 :yaml:
   :datadir: /etc/puppetlabs/puppet/data
 :hierarchy:
-  - "%{::clientcert}"
-  - "%{::custom_location}"
+  - "node/%{::clientcert}"
+  - "datacenter/%{::datacenter}"
   - default

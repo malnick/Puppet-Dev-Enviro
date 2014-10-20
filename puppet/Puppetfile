@@ -2,7 +2,7 @@
 mod 'puppet-modules', :git => 'git@github.com:connectsolutions/puppet-modules' 
 
 # Puppet Data
-mod 'puppet-configuration', :git => 'git@github.com:connectsolutions/puppet-configuration', :ref => 'development'
+mod 'puppet-configuration', :git => 'git@github.com:connectsolutions/puppet-configuration' 
 
 # Aux Modules
 #mod 'nginx', :git => 'https://github.com/jfryman/puppet-nginx'
