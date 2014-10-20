@@ -25,10 +25,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master.vm.synced_folder "puppet/manifests", "/tmp/manifests"
     master.vm.synced_folder "puppet/data", "/tmp/data"
     master.vm.synced_folder "puppet/", "/tmp/puppet"
-    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -s /tmp/modules/ /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -s /tmp/manifests/ /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -s /tmp/data/ /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm /etc/puppetlabs/puppet/hiera.yaml && ln -s /tmp/puppet/hiera.yaml /etc/puppetlabs/puppet/hiera.yaml"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -sf /tmp/modules/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -sf /tmp/manifests/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -sf /tmp/data/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/filestore && ln -sf /tmp/filestore/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -f /etc/puppetlabs/puppet/hiera.yaml && ln -sf /tmp/puppet/hiera.yaml /etc/puppetlabs/puppet/hiera.yaml"
+    master.vm.provision "shell", inline: "rm -f /etc/puppetlabs/puppet/fileserver.conf && ln -sf /tmp/puppet/fileserver.conf /etc/puppetlabs/puppet/fileserver.conf"
   end
 
 ## dev machine - ssh in and puppet apply or a "whatever" box 
@@ -57,3 +59,4 @@ config.vm.define :mtlb do |dev|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 end
+    
