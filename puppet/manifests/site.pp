@@ -1,6 +1,12 @@
 # MTLB Node
+node 'master.dev' {
+	class { 'r10k':
+  		remote => 'git@github.com:connectsolutions/control.git',
+	}
+}
+
 node 'mtlb.dev' {
-  include role::mtlb
+  include ::role::mtlb
 
 }
 

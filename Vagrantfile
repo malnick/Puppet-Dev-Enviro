@@ -26,7 +26,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master.vm.synced_folder "puppet/data", "/tmp/data"
     master.vm.synced_folder "puppet/", "/tmp/puppet"
     master.vm.synced_folder "puppet/filestore", "/tmp/filestore"
-    master.vm.synced_folder "puppet/fileserver.conf", "/tmp/fileserver.conf"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -sf /tmp/modules/ /etc/puppetlabs/puppet/"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -sf /tmp/manifests/ /etc/puppetlabs/puppet/"
     master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -sf /tmp/data/ /etc/puppetlabs/puppet/"
