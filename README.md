@@ -7,6 +7,17 @@ POC: jeff.malnick@connectsolutions.com
 
 See the section on "Code Change Pipeline" for workflow.
 
+## In-Progress
+1. Support for live editing with out git push/pull 
+	1. config.yaml to set the following:
+		1. local_module_dir: /path/to/local/modules
+		1. modules_under_test: [ 'module_1', 'module_2', ...]
+		1. sym link ```local_module_path/module_1``` and other modules under test to puppet/modules 
+		1. If MONO=true then rm puppet/modules/$(module_under_test) and others then symlink locally
+1. Windows support
+	1. ENV variables need to be declared in windows format
+	1. Windows paths
+
 ## Overview
 Currently this dev environment is setup with git branches. Each dev enviro gets a copy of the Rakefile and a custom Vagrantfile that is specific to the environment under test.
 
