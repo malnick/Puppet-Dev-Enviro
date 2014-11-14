@@ -22,19 +22,17 @@ opts = {
 class Server < Sinatra::Base
 	
 	get '/' do
-			unless system('MONO=true rake pull <<< y')
-			abort "Something broke in your puppet modules repo, I couldn't pull..."
-		end
-		puts "Successfully pulled down puppet-modules"
-
+		log = WEBrick::Log.new('/tmp/webhook.log', WEBrick::Log::DEBUG)
+		output = IO.popen('cd /Users/malnick/projects/puppet-connect_solutions/puppet-dev-environment && MONO=true rake pull <<< y')
+		log.info(output.readlines)
 	end
 
-	post '/devhook' do
-		unless system('MONO=true rake pull <<< y')
-			abort "Something broke in your puppet modules repo, I couldn't pull..."
-		end
-		puts "Successfully pulled down puppet-modules"
-	end
+	#post '/devhook' do
+	#	unless system('MONO=true rake pull <<< y')
+	#		abort "Something broke in your puppet modules repo, I couldn't pull..."
+	#	end
+	#	puts "Successfully pulled down puppet-modules"
+	#end
 
 	not_found do
 		halt 404, 'You shall not pass! (page not found)'
