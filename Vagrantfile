@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	v.memory = 2048
 	v.cpus = 1
     end
-    master.vm.network :private_network, ip: "10.28.126.141"
+    master.vm.network :public_network
     master.vm.hostname = 'master.dev'
     master.vm.provision :hosts
     master.vm.provision :pe_bootstrap do |pe|
@@ -36,28 +36,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 ## dev machine - ssh in and puppet apply or a "whatever" box 
   config.vm.define :dev1 do |dev|
-    dev.vm.network :private_network, ip: "10.28.126.140"
+    dev.vm.network :public_network
     dev.vm.hostname = 'do.dev.here'
-    dev.vm.provision :hosts
+    #dev.vm.provision :hosts
     dev.vm.provision :pe_bootstrap do |pe|
       pe.role   =  :agent
       pe.master = 'master.dev'
     end
-  end
-
-config.vm.define :mtlb do |dev|
-    dev.vm.network :private_network, ip: "10.28.126.150"
-    dev.vm.hostname = 'mtlb.dev'
-    dev.vm.provision :hosts
-    dev.vm.provision :pe_bootstrap do |pe|
-      pe.role   =  :agent
-      pe.master = 'master.dev'
-    end
-  end
-
-# this uses the host vpn for accessing eng.wopr resources
-  config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 end
-    
+

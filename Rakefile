@@ -13,7 +13,7 @@ task :default => 'deps'
 necessary_programs = %w(VirtualBox vagrant)
 necessary_plugins = %w(vagrant-hosts vagrant-auto_network vagrant-pe_build)
 necessary_gems = %w(bundle r10k)
-dir_structure = %w(puppet puppet/modules puppet/manifests)
+dir_structure = %w(puppet puppet/modules puppet/manifests puppet/data)
 file_structure = %w(puppet/Puppetfile puppet/manifests/site.pp)
 
 desc 'Check for the environment dependencies'
