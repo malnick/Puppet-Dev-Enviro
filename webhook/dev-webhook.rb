@@ -22,13 +22,18 @@ opts = {
 class Server < Sinatra::Base
 	
 	get '/' do
-		raise Sinatra::NotFound
+			unless system('MONO=true rake pull <<< y')
+			abort "Something broke in your puppet modules repo, I couldn't pull..."
+		end
+		puts "Successfully pulled down puppet-modules"
+
 	end
 
 	post '/devhook' do
-		unless system('rake pull << y')
+		unless system('MONO=true rake pull <<< y')
 			abort "Something broke in your puppet modules repo, I couldn't pull..."
 		end
+		puts "Successfully pulled down puppet-modules"
 	end
 
 	not_found do
