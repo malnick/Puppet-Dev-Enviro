@@ -13,8 +13,11 @@ Machines:
 ### Webhook
 
 ```webhook/run_hook_server.sh``` 	=> {start|stop} Executable to run dev-webhook.rb 
+
 ```webhook/post-commit``` 		=> Hook to be placed in ```/my/repo/.git/hooks``` to auto update this enviro on commit
+
 ```webhook/server.log```		=> Server logging
+
 ```webhook/hook_session.log```		=> Hook session log: output from curl's to the server. 
 
 ### Puppetfile
