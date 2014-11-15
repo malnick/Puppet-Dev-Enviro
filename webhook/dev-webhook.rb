@@ -3,11 +3,10 @@ require 'json'
 require 'webrick'
 require 'rubygems'
 
-GITSERVER 	= 'master.puppetlabs.vm' # Change to gitlab or whatever server you're using
-LOGFILE   	= '/tmp/webhook.log' #'/var/lib/peadmin/webhook.log'
+CWD		= Dir.pwd 
+LOGFILE   	= "#{CWD}/server.log" #'/tmp/webhook.log' #'/var/lib/peadmin/webhook.log'
 USER      	= 'admin'
 PASS      	= 'admin'
-HIERA_DIR	= '/Users/malnick/projects/puppet-connect_solutions/puppet-configuration' # replace in prod
 
 ENV['HOME'] = '/root'
 ENV['PATH'] = '/sbin:/usr/sbin:/bin:/usr/bin:/opt/puppet/bin'
@@ -22,9 +21,10 @@ opts = {
 class Server < Sinatra::Base
 	
 	get '/' do
-		log = WEBrick::Log.new('/tmp/webhook.log', WEBrick::Log::DEBUG)
-		output = IO.popen('cd /Users/malnick/projects/puppet-connect_solutions/puppet-dev-environment && MONO=true rake pull <<< y')
-		log.info(output.readlines)
+		log = WEBrick::Log.new("#{CWD}/hook_session.log", WEBrick::Log::DEBUG)
+		log.info("Server hooked..")
+		output = IO.popen("cd #{CWD} && MONO=true rake pull <<< y")
+		log.debug(output.readlines)
 	end
 
 	#post '/devhook' do
@@ -39,8 +39,7 @@ class Server < Sinatra::Base
 	end
 
 	def protected!
-		# only allow access from the git server.
-		throw(:halt, [401, "Not authorized: #{request.host}\n"]) unless request.host == GITSERVER
+		throw(:halt, [401, "Not authorized: #{request.host}\n"]) 
 	end
 end
 

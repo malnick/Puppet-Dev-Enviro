@@ -59,6 +59,10 @@ task :deps do
   end
   puts "OK"
 
+  puts "Checking respository structure..."
+  Rake::Task["create_structure"].execute
+
+
   puts "\n"
   puts '*' * 80
   puts "Congratulations! Everything looks a-ok."

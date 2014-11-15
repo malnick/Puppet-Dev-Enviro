@@ -1,24 +1,34 @@
-MTLB BRANCH: puppet-dev-environment
+Webhook-based Local Integration Environment
 ======================
-## Code changse READ THIS IT'S IMPORTANT!!!!
-**ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY**
-
-See the section on "Code Change Pipeline" for workflow.
+This environment leverages a webhook running on ```localhost:6969``` and local paths to your repositories to automatically pull in changes on each git commit. 
 
 ## Overview
-Enviro: MTLB Development
-
 Machines:
 
 * 1 Puppet Master
-* 1 MTLB Node
+* 1 Dev Node
 
-Notes: MTLB rapid development 
+## Things that make it go
 
-POC: jeff.malnick@connectsolutions.com
+### Webhook
+
+```webhook/run_hook_server.sh``` 	=> {start|stop} Executable to run dev-webhook.rb 
+```webhook/post-commit``` 		=> Hook to be placed in ```/my/repo/.git/hooks``` to auto update this enviro on commit
+```webhook/server.log```		=> Server logging
+```webhook/hook_session.log```		=> Hook session log: output from curl's to the server. 
+
+### Puppetfile
+Update ```puppet/Puppetfile``` to use local paths to your repos:
+
+```ruby
+# Puppet Modules
+mod 'puppet-modules', :git => '/Users/malnick/projects/puppet-connect_solutions/puppet-modules/', :ref => 'mtlb_sso'
+
+# Puppet Data
+mod 'puppet-configuration', :git => '/Users/malnick/projects/puppet-connect_solutions/puppet-configuration/', :ref => 'mtlb_sso'
+```
 
 ## Deployment
-WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do not leave sensitive modules in there before running deploy.
 
 #### ```rake```
 
@@ -61,33 +71,7 @@ WARNING: All data in puppet/modules will be blown away on ```rake deploy```. Do 
 
 1. Add modules to ```puppet/Puppetfile```
 
-Example: 
-
-```ruby
-# Puppet Modules
-mod 'puppet-modules', :git => 'git@github.com:connectsolutions/puppet-modules', :ref => ${some_branch}
-
-# Puppet Data
-mod 'puppet-configuration', :git => 'git@github.com:connectsolutions/puppet-configuration'
-
-# Aux Modules
-mod 'nginx', :git => 'https://github.com/jfryman/puppet-nginx'
-mod 'apt', :git => 'https://github.com/puppetlabs/puppetlabs-apt'
-```
-
 1. Add hieradata repo to ```puppet/puppetfile```
-
-```bash
-vi puppet/Puppetfile
-# Add the :git repo for your puppet-configuration
-```
-
-1. Configure hieradata
-
-```bash
-vi puppet/hiera.yaml
-# Make neccessary edits
-```
 
 1. Configure site.pp
 
@@ -114,30 +98,9 @@ sudo su root
 puppet agent -t
 ```
 
-# Code Change Pipeline
-READ THIS IT'S IMPORTANT!!!!
-***ALL CODE IN puppet/modules/ WILL BE BLOWN AWAY ON EITHER ```rake deploy``` or ```rake pull``` DO NOT EDIT CODE IN THIS DIRECTORY***
+1. Update the code
+	1. In your local puppet-modules or puppet-configuration repo, make changes
+	1. On commit, the hook you placed in ./.git/hooks will curl the server in the dev enviro
+	1. Your new code should be available on your master. 
 
-1. If you haven't already, git clone the puppet-modules repo (git@github.com:connectsolutions/puppet-modules)
-1. In one terminal, have an open ssh session going with your dev node in puppet-dev-enviro
-1. In another terminal have an editor open to the module code for $your_dev_class which is directly editing code from puppet-modules/$my_dev_modules
-
-	DO NOT DIRECTLY EDIT THE CODE IN puppet/modules!
-
-1. Run the puppet agent on your node, make code changes in your editor
-1. When ready to test new code on the node:
-	1. git add $my_code
-	1. git commit -m "my awesome message"
-	1. git push origin $my_branch
-1. Then in the puppet-dev-enviro directory
-	
-	MONO=true rake pull
-
-1. Make sure puppet/Puppetfile specifies the correct :ref branch for puppet-modules
-1. Run the agent on your dev node again
-
-To speed this up you can create an alias like:
-
-	alias fuckit="git commit -am 'I'm in a huge rush' && git push origin $my_branch && /path/to/puppet-dev-enviro/MONO=true rake pull"
-
-And run that in the terminal which is editing the code base. 
+1. REPL
