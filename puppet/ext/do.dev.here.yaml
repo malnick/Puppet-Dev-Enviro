@@ -1,0 +1,16 @@
+profiles::mtlb::accounts:
+  fedramp:
+    vrrp_ids:
+      - '3' # registered in fedramp box file
+    webapp_address: '173.46.143.19/25'
+    webapp_gateway: '10.28.125.198'
+    webapp_servers:
+      - '10.28.125.205'
+      - '10.28.125.203'
+    fms_servers:
+      fms_1:
+        - '10.28.125.198'
+        - '10.28.125.214'
+    loopback_address: '172.16.0.1' # I'm fairly certain this is good.
+# Order is set to 'master' or 'backup' per keepalived mode. These will get upcased for you in the template, use lower case since there is a logic match for the right priority level in the template too.
+    order: master

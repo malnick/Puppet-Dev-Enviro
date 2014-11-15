@@ -1,16 +1,17 @@
-# Frontend Server
-node "u-du-csxstgnode.fed.cs.int" {
-  include ::role::csx_frontend
-}
+# MTLB Node
+#node 'master.dev' {
+#	class { 'r10k':
+ # 		remote => 'git@github.com:connectsolutions/control.git',
+#	}
+#}
 
 # Trash-it Server
-node 'dev1.dev' {
-  notice("Hello world")
+node 'do.dev.here' { 
+  include ::role::mtlb
 }
 
-# MySQL Server
-node 'u-du-csxstgsql.fed.cs.int' {
-  include ::role::csx_mysql
-}
 
-# Backend Server
+
+
+
+

@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     	v.memory = 2048
 	v.cpus = 1
     end
-    master.vm.network :private_network, ip: "10.28.126.141"
+    master.vm.network :public_network
     master.vm.hostname = 'master.dev'
     master.vm.provision :hosts
     master.vm.provision :pe_bootstrap do |pe|
@@ -25,35 +25,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master.vm.synced_folder "puppet/manifests", "/tmp/manifests"
     master.vm.synced_folder "puppet/data", "/tmp/data"
     master.vm.synced_folder "puppet/", "/tmp/puppet"
-    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -s /tmp/modules/ /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -s /tmp/manifests/ /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -s /tmp/data/ /etc/puppetlabs/puppet/"
-    master.vm.provision "shell", inline: "rm /etc/puppetlabs/puppet/hiera.yaml && ln -s /tmp/puppet/hiera.yaml /etc/puppetlabs/puppet/hiera.yaml"
+    master.vm.synced_folder "puppet/filestore", "/tmp/filestore"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/modules/ && ln -sf /tmp/modules/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/manifests/ && ln -sf /tmp/manifests/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/data && ln -sf /tmp/data/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -rf /etc/puppetlabs/puppet/filestore && ln -sf /tmp/filestore/ /etc/puppetlabs/puppet/"
+    master.vm.provision "shell", inline: "rm -f /etc/puppetlabs/puppet/hiera.yaml && ln -sf /tmp/puppet/hiera.yaml /etc/puppetlabs/puppet/hiera.yaml"
+    master.vm.provision "shell", inline: "rm -f /etc/puppetlabs/puppet/fileserver.conf && ln -sf /tmp/puppet/fileserver.conf /etc/puppetlabs/puppet/fileserver.conf"
   end
 
 ## dev machine - ssh in and puppet apply or a "whatever" box 
   config.vm.define :dev1 do |dev|
-    dev.vm.network :private_network, ip: "10.28.126.140"
+    dev.vm.network :public_network
     dev.vm.hostname = 'do.dev.here'
-    dev.vm.provision :hosts
+    #dev.vm.provision :hosts
     dev.vm.provision :pe_bootstrap do |pe|
       pe.role   =  :agent
       pe.master = 'master.dev'
     end
-  end
-
-config.vm.define :mtlb do |dev|
-    dev.vm.network :private_network, ip: "10.28.126.150"
-    dev.vm.hostname = 'mtlb.dev'
-    dev.vm.provision :hosts
-    dev.vm.provision :pe_bootstrap do |pe|
-      pe.role   =  :agent
-      pe.master = 'master.dev'
-    end
-  end
-
-# this uses the host vpn for accessing eng.wopr resources
-  config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 end
+

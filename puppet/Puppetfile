@@ -1,9 +1,7 @@
 # Puppet Modules 
-mod 'puppet-modules', :git => 'git@github.com:connectsolutions/puppet-modules'
+mod 'puppet-modules', :git => '/Users/malnick/projects/puppet-connect_solutions/puppet-modules/', :ref => 'mtlb_sso'
 
 # Puppet Data
-mod 'puppet-configuration', :git => 'git@github.com:connectsolutions/mtlb-configuration', :ref => 'development'
+mod 'puppet-configuration', :git => '/Users/malnick/projects/puppet-connect_solutions/puppet-configuration/', :ref => 'mtlb_sso' 
 
 # Aux Modules
-mod 'nginx', :git => 'https://github.com/jfryman/puppet-nginx'
-mod 'apt', :git => 'https://github.com/puppetlabs/puppetlabs-apt'
